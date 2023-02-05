@@ -54,3 +54,6 @@ productDF['internal'] = productDF['Which of the following interior components wo
 productDF['fact_length'] = productDF['factors'].str.len()
 productDF['ext_length'] = productDF['external'].str.len()
 productDF['int_length'] = productDF['internal'].str.len()
+
+#Saving dataframe into excel file to analyse on R
+productDF.to_excel('stringed_survey.xlsx', index=False)
