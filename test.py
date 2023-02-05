@@ -7,9 +7,11 @@ Created on Tue Jan 31 10:48:44 2023
 
 import numpy as np
 import pandas as pd
-import seaborn as sb
-import matplotlib.pyplot as plt
-sb.set()
+# =============================================================================
+# import seaborn as sb
+# import matplotlib.pyplot as plt
+# sb.set()
+# =============================================================================
 
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
@@ -41,8 +43,6 @@ print(productDF.head())
 #assign range for relationship
 #assign range for customisation likelihood
 #assign range for car customisation fee
-
-#sb.heatmap(productDF.isnull(),yticklabels=False,cbar=False,cmap='Blues')
 
 #Creating dataframes for each header
 productDF=productDF.drop(productDF.columns[0], axis=1)
