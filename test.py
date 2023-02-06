@@ -58,6 +58,10 @@ productDF['fact_length'] = productDF['factors'].str.len()
 productDF['ext_length'] = productDF['external'].str.len()
 productDF['int_length'] = productDF['internal'].str.len()
 
+rangeDF = productDF[["Age", "Gender", "Category", "MarriageStatus","FreeCustomization","WTSCustomization", "WantOwnPersonalization", "WTSPersonalization", "PersonalizationJob"]]
 
+plt.figure(figsize=(12,8))
+sb.stripplot(x='MarriageStatus', y='Age', data=rangeDF, jitter=True, hue='Category', dodge=True, palette='viridis')
 
 productDF.to_excel('stringed_survey.xlsx', index=False)
+rangeDF.to_excel('range_survey.xlsx', index=False)
