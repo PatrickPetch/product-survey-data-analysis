@@ -65,3 +65,56 @@ sb.stripplot(x='MarriageStatus', y='Age', data=rangeDF, jitter=True, hue='Catego
 
 productDF.to_excel('stringed_survey.xlsx', index=False)
 rangeDF.to_excel('range_survey.xlsx', index=False)
+
+def to_1D(series):
+  return pd.Series([x for _list in series for x in _list])
+
+productDF["factors"].replace(np.NaN,"",inplace=True)
+# for i, l in enumerate(productDF["factors"]):
+#     print("list",i,"is",type(l))
+
+unique_fac = to_1D(productDF["factors"]).value_counts()
+unique_factors = to_1D(productDF["factors"]).value_counts().index.tolist()
+unqiue_factor_count = to_1D(productDF["factors"]).value_counts().values
+
+# Create plot for factors
+fig, ax = plt.subplots(figsize = (14,4))
+ax.bar(unique_factors, unqiue_factor_count)
+ax.set_ylabel("Frequency", size = 12)
+ax.set_title("Top factors", size = 14)
+plt.savefig("bar_viz.jpg", dpi = 100)
+
+#=================================
+
+productDF["external"].replace(np.NaN,"",inplace=True)
+# for i, l in enumerate(productDF["external"]):
+#     print("list",i,"is",type(l))
+
+unique_ext = to_1D(productDF["external"]).value_counts()
+unique_externals = to_1D(productDF["external"]).value_counts().index.tolist()
+unqiue_external_count = to_1D(productDF["external"]).value_counts().values
+
+# Create plot for externals
+fig, ax = plt.subplots(figsize = (14,4))
+ax.bar(unique_externals, unqiue_external_count)
+ax.set_ylabel("Frequency", size = 12)
+ax.set_title("Top externals", size = 14)
+plt.savefig("bar_viz.jpg", dpi = 100)
+
+#=================================
+
+productDF["internal"].replace(np.NaN,"",inplace=True)
+# for i, l in enumerate(productDF["internal"]):
+#     print("list",i,"is",type(l))
+
+unique_int = to_1D(productDF["internal"]).value_counts()
+unique_internals = to_1D(productDF["internal"]).value_counts().index.tolist()
+unqiue_internal_count = to_1D(productDF["internal"]).value_counts().values
+
+# Create plot for internals
+fig, ax = plt.subplots(figsize = (14,4))
+ax.bar(unique_internals, unqiue_internal_count)
+ax.set_ylabel("Frequency", size = 12)
+ax.set_title("Top internals", size = 14)
+plt.savefig("bar_viz.jpg", dpi = 100)
+
