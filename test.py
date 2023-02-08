@@ -74,6 +74,7 @@ productDF["factors"].replace(np.NaN,"",inplace=True)
 #     print("list",i,"is",type(l))
 
 unique_fac = to_1D(productDF["factors"]).value_counts()
+unique_fac = pd.DataFrame({'Factor':unique_fac.index, 'Count':unique_fac.values})
 unique_factors = to_1D(productDF["factors"]).value_counts().index.tolist()
 unqiue_factor_count = to_1D(productDF["factors"]).value_counts().values
 
@@ -91,6 +92,7 @@ productDF["external"].replace(np.NaN,"",inplace=True)
 #     print("list",i,"is",type(l))
 
 unique_ext = to_1D(productDF["external"]).value_counts()
+unique_ext = pd.DataFrame({'External':unique_ext.index, 'Count':unique_ext.values})
 unique_externals = to_1D(productDF["external"]).value_counts().index.tolist()
 unqiue_external_count = to_1D(productDF["external"]).value_counts().values
 
@@ -108,6 +110,7 @@ productDF["internal"].replace(np.NaN,"",inplace=True)
 #     print("list",i,"is",type(l))
 
 unique_int = to_1D(productDF["internal"]).value_counts()
+unique_int = pd.DataFrame({'Internal':unique_int.index, 'Count':unique_int.values})
 unique_internals = to_1D(productDF["internal"]).value_counts().index.tolist()
 unqiue_internal_count = to_1D(productDF["internal"]).value_counts().values
 
@@ -118,3 +121,8 @@ ax.set_ylabel("Frequency", size = 12)
 ax.set_title("Top internals", size = 14)
 plt.savefig("bar_viz.jpg", dpi = 100)
 
+#Saving factors as xlsx
+with pd.ExcelWriter('factors.xlsx') as writer:
+    unique_fac.to_excel(writer, sheet_name="Factors", index=False)
+    unique_int.to_excel(writer, sheet_name="Internal Cust", index=False)
+    unique_ext.to_excel(writer, sheet_name="External Cust", index=False)
