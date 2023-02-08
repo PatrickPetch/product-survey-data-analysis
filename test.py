@@ -13,6 +13,7 @@ sb.set()
 
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
+from sklearn.preprocessing import LabelEncoder
 
 # =============================================================================
 # from sklearn.model_selection import train_test_split
@@ -34,14 +35,6 @@ productDF = pd.read_excel(filename)
 print("product shape: ",productDF.shape)
 print(productDF.head())
 
-#pull unique factors during deciding which car
-#pull unique external componenets to customise
-#pull unique internal components to customise
-#assign range for category of car
-#assign range for relationship
-#assign range for customisation likelihood
-#assign range for car customisation fee
-
 #sb.heatmap(productDF.isnull(),yticklabels=False,cbar=False,cmap='Blues')
 
 # Renaming dataframe columns
@@ -58,13 +51,29 @@ productDF['fact_length'] = productDF['factors'].str.len()
 productDF['ext_length'] = productDF['external'].str.len()
 productDF['int_length'] = productDF['internal'].str.len()
 
-rangeDF = productDF[["Age", "Gender", "Category", "MarriageStatus","FreeCustomization","WTSCustomization", "WantOwnPersonalization", "WTSPersonalization", "PersonalizationJob"]]
+productDF['WTSCustomization']= productDF['WTSCustomization'].astype(str)
+productDF['WTSPersonalization']= productDF['WTSPersonalization'].astype(str)
+
+
+productDF['Age_label_encoded']=LabelEncoder().fit_transform(productDF.Age)
+productDF['Gender_label_encoded']=LabelEncoder().fit_transform(productDF.Gender)
+productDF['Category_label_encoded']=LabelEncoder().fit_transform(productDF.Category)
+productDF['MarriageStatus_label_encoded']=LabelEncoder().fit_transform(productDF.MarriageStatus)
+productDF['FreeCustomization_label_encoded']=LabelEncoder().fit_transform(productDF.FreeCustomization)
+productDF['WTSCustomization_label_encoded']=LabelEncoder().fit_transform(productDF.WTSCustomization)
+productDF['WantOwnPersonalization_label_encoded']=LabelEncoder().fit_transform(productDF.WantOwnPersonalization)
+productDF['WTSPersonalization_label_encoded']=LabelEncoder().fit_transform(productDF.WTSPersonalization)
+productDF['PersonalizationJob_label_encoded']=LabelEncoder().fit_transform(productDF.PersonalizationJob)
+
+
+rangeDF = productDF[["Age", "Gender", "Category", "MarriageStatus","FreeCustomization","WTSCustomization",\
+                     "WantOwnPersonalization","WTSPersonalization","PersonalizationJob"]]
+encodeDF = productDF[['Age_label_encoded','Gender_label_encoded','Category_label_encoded','MarriageStatus_label_encoded',\
+                      'FreeCustomization_label_encoded','WTSCustomization_label_encoded','WantOwnPersonalization_label_encoded',\
+                          'WTSPersonalization_label_encoded','PersonalizationJob_label_encoded','fact_length','ext_length','int_length']]
 
 plt.figure(figsize=(12,8))
 sb.stripplot(x='MarriageStatus', y='Age', data=rangeDF, jitter=True, hue='Category', dodge=True, palette='viridis')
-
-productDF.to_excel('stringed_survey.xlsx', index=False)
-rangeDF.to_excel('range_survey.xlsx', index=False)
 
 def to_1D(series):
   return pd.Series([x for _list in series for x in _list])
@@ -121,7 +130,11 @@ ax.set_ylabel("Frequency", size = 12)
 ax.set_title("Top internals", size = 14)
 plt.savefig("bar_viz.jpg", dpi = 100)
 
-#Saving factors as xlsx
+#Saving DFs as xlsx
+productDF.to_excel('stringed_survey.xlsx', index=False)
+rangeDF.to_excel('range_survey.xlsx', index=False)
+encodeDF.to_excel('encoded_data.xlsx', index=False)
+
 with pd.ExcelWriter('factors.xlsx') as writer:
     unique_fac.to_excel(writer, sheet_name="Factors", index=False)
     unique_int.to_excel(writer, sheet_name="Internal Cust", index=False)
