@@ -6,6 +6,8 @@ install.packages("cluster")
 install.packages("dplyr")
 install.packages("ggbeeswarm")
 install.packages("explore")
+install.packages("missMDA")
+install.packages("ggfortify")
 
 library(readxl)
 library(FactoMineR)
@@ -17,7 +19,8 @@ library(cluster)
 library(ClusterR)
 library(dplyr)
 library(explore)
-
+library(missMDA)
+library(ggfortify)
 # Importing data from Excel sheets
 pdt_data = read_excel('D:/Y4S2/MA4829 Machine Intel/proj/MA4829-machine-intelligence-project/stringed_survey.xlsx')
 range_data = read_excel('D:/Y4S2/MA4829 Machine Intel/proj/MA4829-machine-intelligence-project/range_survey.xlsx')
@@ -70,17 +73,45 @@ encoded_data %>%
   select(MarriageStatus_label_encoded, fact_length, ext_length, int_length, PersonalizationJob_label_encoded, WTSCustomization_label_encoded, WTSPersonalization_label_encoded, WantOwnPersonalization_label_encoded) %>% 
   explore_all(target = MarriageStatus_label_encoded)
 
+
+
 # ggplot(pdt_data)
 # ggplot(range_data)
 # ggplot(encoded_data, aes(x = colnames(encoded_data))) + geom_beeswarm()
 # ggplot(factors)
 
-#Trying out Principal Component Analysis for encoded_data since all numeric (failed)
+# Trying out Principal Component Analysis for encoded_data since all numeric (failed)
 # my_pca <- prcomp(encoded_data, scale = TRUE,
 #                 center = TRUE, retx = T)
 
-# Trying out factor analysis of mixed data (Looking for Principal Component)
+
+# Trying out factor analysis of encoded data (Looking for Principal Component)
+encode <- imputePCA(encoded_data, ncp = 2, scale = TRUE, method = c("Regularized"), 
+          row.w = NULL, ind.sup=NULL,quanti.sup=NULL,quali.sup=NULL,
+          coeff.ridge = 1, threshold = 1e-06, seed = NULL, nb.init = 1,  
+          maxiter = 1000)
 # encoded_famd <- FAMD(encoded_data, graph=TRUE)
+
+encode <- imputePCA(encoded_data)
+
+encode.pca <- PCA(encode['completeObs'])
+
+
+########
+first.pca <- prcomp(encoded_data[,c(1:9)],
+                   center = TRUE,
+                   scale. = TRUE)
+first.pca.plot <- autoplot(first.pca,
+                          data = encoded_data)
+first.pca.plot
+
+first.pca.biplot <- biplot(first.pca,
+                           data = encoded_data)
+first.pca.biplot
+
+plot.pca.pca <- plot(first.pca, type="l")
+plot.pca.pca
+
 # pdt_famd <- FAMD(pdt_data, graph=TRUE)
 # range_famd <- FAMD(range_data, graph=TRUE)
 
