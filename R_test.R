@@ -74,12 +74,6 @@ encoded_data %>%
   explore_all(target = MarriageStatus_label_encoded)
 
 
-
-# ggplot(pdt_data)
-# ggplot(range_data)
-# ggplot(encoded_data, aes(x = colnames(encoded_data))) + geom_beeswarm()
-# ggplot(factors)
-
 # Trying out Principal Component Analysis for encoded_data since all numeric (failed)
 # my_pca <- prcomp(encoded_data, scale = TRUE,
 #                 center = TRUE, retx = T)
@@ -91,24 +85,30 @@ encode <- imputePCA(encoded_data, ncp = 2, scale = TRUE, method = c("Regularized
           coeff.ridge = 1, threshold = 1e-06, seed = NULL, nb.init = 1,  
           maxiter = 1000)
 # encoded_famd <- FAMD(encoded_data, graph=TRUE)
-
 encode <- imputePCA(encoded_data)
-
 encode.pca <- PCA(encode['completeObs'])
 
 
 ########
-first.pca <- prcomp(encoded_data[,c(1:9)],
+# Replacing NA values with 0 and running PCA on encoded data
+encoded_data[is.na(encoded_data)] <- 0
+first.pca <- prcomp(encoded_data[,c(1:12)],
                    center = TRUE,
                    scale. = TRUE)
+
+
+#Plotting scree plot of PCA
 var_explained = first.pca$sdev^2 / sum(first.pca$sdev^2)
-qplot(c(1:9), var_explained) + geom_line() + xlab("Principal Component") + ylab("Variance Explained") + ggtitle("Scree Plot") + ylim(0, 1)
+qplot(c(1:12), var_explained) + geom_line() + xlab("Principal Component") + ylab("Variance Explained") + ggtitle("Scree Plot") + ylim(0, 1)
+# Summary of PCA
 summary(first.pca)
 
+# Plotting PCA plot
 first.pca.plot <- autoplot(first.pca,
                            data = encoded_data, loadings = TRUE, loadings.colour = 'blue', loadings.label = TRUE)
 first.pca.plot
 
+# Plotting PCA plot with labelled data points in background
 first.pca.biplot <- biplot(first.pca,
                             data = encoded_data, loadings = TRUE, loadings.colour = 'blue', loadings.label = TRUE)
 first.pca.biplot
