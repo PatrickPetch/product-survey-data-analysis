@@ -101,16 +101,20 @@ encode.pca <- PCA(encode['completeObs'])
 first.pca <- prcomp(encoded_data[,c(1:9)],
                    center = TRUE,
                    scale. = TRUE)
+var_explained = first.pca$sdev^2 / sum(first.pca$sdev^2)
+qplot(c(1:9), var_explained) + geom_line() + xlab("Principal Component") + ylab("Variance Explained") + ggtitle("Scree Plot") + ylim(0, 1)
+summary(first.pca)
+
 first.pca.plot <- autoplot(first.pca,
-                          data = encoded_data)
+                           data = encoded_data, loadings = TRUE, loadings.colour = 'blue', loadings.label = TRUE)
 first.pca.plot
 
 first.pca.biplot <- biplot(first.pca,
-                           data = encoded_data)
+                            data = encoded_data, loadings = TRUE, loadings.colour = 'blue', loadings.label = TRUE)
 first.pca.biplot
 
-plot.pca.pca <- plot(first.pca, type="l")
-plot.pca.pca
+plot.pca.variance <- plot(first.pca, type="l")
+plot.pca.variance
 
 # pdt_famd <- FAMD(pdt_data, graph=TRUE)
 # range_famd <- FAMD(range_data, graph=TRUE)
