@@ -44,7 +44,7 @@ factors = multiplesheets(path)
 # removing column number from dataset
 pdt_data = pdt_data[c(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18)]
 
-# preliminary scatterplots to see any obvious trends
+# preliminary scatterplots to see any obvious trends and structure of dataframes
 plot(pdt_data)
 plot(range_data)
 plot(encoded_data)
@@ -117,15 +117,6 @@ first.pca.biplot
 plot.pca.variance <- plot(first.pca, type="l")
 plot.pca.variance
 
+# Trying out factor analysis of mixed data since dataframe consists of both numerical and categorical data (failed)
 # pdt_famd <- FAMD(pdt_data, graph=TRUE)
 # range_famd <- FAMD(range_data, graph=TRUE)
-
-
-#kmeans.re <- kmeans(range_data, centers = 3, nstart = 20)
-#kmeans.re
-
-#result <- kmeans(pdt_data,centers=3,nstart =20)
-#result$size
-#result$centers
-#result$cluster
-
