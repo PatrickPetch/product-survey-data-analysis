@@ -1,1 +1,1 @@
-# MA4829-machine-intelligence-project
+# machine-intelligence-product-survey-data-analysis
